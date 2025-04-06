@@ -5,7 +5,7 @@ fetch('videos.html')
     const tempElement = document.createElement('div');
     tempElement.innerHTML = data;
 
-    const videoButtons = Array.from(tempElement.querySelectorAll('#videos button'));
+    const videoButtons = Array.from(tempElement.querySelectorAll('#videos a'));
 
     if (videoButtons.length >= 3) {
       const uniqueButtons = Array.from(new Set(videoButtons));
