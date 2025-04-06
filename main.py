@@ -3,31 +3,34 @@ import random
 import string
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+import boto3
 
 app = Flask(__name__)
 
-# Folders configuration
-UPLOAD_FOLDER = 'uploads'
+# Folders configuration for HTML templates
 TEMPLATE_FOLDER = 'templates'  # generated video pages will be saved here
 VIDEOS_HTML_PATH = os.path.join(TEMPLATE_FOLDER, 'videos.html')
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 25 * 1024 * 1024  # 25 MB limit
 
-# Ensure required folders exist
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# S3 configuration - hardcoded credentials (for testing ONLY)
+S3_BUCKET = "your-s3-bucket-name"
+AWS_REGION = "us-east-1"
+AWS_ACCESS_KEY_ID = "YOUR_AWS_ACCESS_KEY_ID"
+AWS_SECRET_ACCESS_KEY = "YOUR_AWS_SECRET_ACCESS_KEY"
+
+s3 = boto3.client(
+    's3',
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_REGION
+)
 
 # Home page
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Route to serve uploaded video files
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
-# Upload video route with error handling for duplicate filenames
+# Upload video route using S3 for file storage
 @app.route('/upload-video', methods=['GET', 'POST'])
 def upload_video():
     if request.method == 'POST':
@@ -39,32 +42,27 @@ def upload_video():
 
         if video_file:
             original_filename = video_file.filename
-            video_path = os.path.join(app.config['UPLOAD_FOLDER'], original_filename)
             
-            # Check if a file with the same name already exists.
-            # If so, rename the file by appending a random 6-character string.
-            if os.path.exists(video_path):
-                base, ext = os.path.splitext(original_filename)
-                random_suffix = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
-                video_filename = f"{base}_{random_suffix}{ext}"
-                video_path = os.path.join(app.config['UPLOAD_FOLDER'], video_filename)
-            else:
-                video_filename = original_filename
+            # Generate a unique filename to avoid conflicts in S3
+            base, ext = os.path.splitext(original_filename)
+            random_suffix = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+            video_filename = f"{base}_{random_suffix}{ext}"
+            
+            try:
+                # Upload file object directly to S3
+                s3.upload_fileobj(video_file, S3_BUCKET, video_filename)
+            except Exception as e:
+                print("Error uploading to S3:", e)
+                return "Error uploading file", 500
 
-            # Save video file
-            video_file.save(video_path)
+            # Generate the S3 URL for the uploaded video
+            video_url = f"https://{S3_BUCKET}.s3.amazonaws.com/{video_filename}"
 
-            # Generate a random string for the HTML filename (8 characters)
-            random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-            html_filename = f"Mt-{random_string}.html"
-
-            # Get current timestamp for display (if needed)
+            # Get current timestamp for display if needed
             video_creation_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-            # Generate URL for the uploaded video file using our route
-            video_url = url_for('uploaded_file', filename=video_filename)
-
-            # Generate HTML content for the video page (without the comment section)
+            # Generate HTML content for the video page
+            html_filename = f"Mt-{''.join(random.choices(string.ascii_letters + string.digits, k=8))}.html"
             html_content = f"""
             <!DOCTYPE html>
             <html>
@@ -129,4 +127,3 @@ def tos():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))  # Default to 5001 if no port is specified
     app.run(host='0.0.0.0', port=port)
-    
