@@ -1,0 +1,200 @@
+html, body {
+height: 100%;
+width: 100%;
+background-color: #252525;
+font-family: 'Roboto', sans-serif;
+color: #fff;
+}
+
+* {
+  -webkit-font-size-adjust: 100%;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+@font-face {
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 700;
+src: url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fCRc4EsA.woff2) format('woff2');
+}
+
+#create-account, #signup-button, #login-button {
+position: relative;
+top: 10px;
+right: 10px;
+padding: 10px 15px;
+background-color: #3498db;
+color: #fff;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
+body *:not(h1:contains("-"):only-child),
+body *:not(h2:contains("-"):only-child),
+body *:not(h3:contains("-"):only-child),
+body *:not(h4:contains("-"):only-child),
+body *:not(h5:contains("-"):only-child),
+body *:not(h6:contains("-"):only-child),
+body *:not(p),
+body:not(button) {
+font-family: 'Roboto', sans-serif;
+font-weight: bold;
+}
+
+p, button {
+font-family: 'Roboto', sans-serif;
+font-weight: bold;
+}
+
+p, h1, h2, h3, h4, h5 {
+color: snow;
+position: relative;
+}
+
+separator {
+margin-bottom: 1.25em;
+margin-top: 1.25em;
+padding: 0.5em;
+}
+
+/* For Mobile */
+@media (max-width: 767px) {
+video {
+max-width: 100%;
+max-height: 576px;
+}
+  video {
+    height: 576px;
+    width: 720px;
+  }
+
+#Logo {
+  height: 246px;
+  width: 45%;
+  padding: 0;
+  margin: 0;
+}
+}
+
+/* For Desktop */
+@media (min-width: 1024px) {
+video {
+max-width: 100%;
+max-height: 720px;
+position: relative;
+}
+  video {
+    height: 720px;
+    width: 1280px;
+    position: relative;
+  }
+h1, h2, h3, h4, h5, h6, p {
+font-size: 175%;
+}
+
+a {
+  font-size: 100%;
+}
+
+button {
+font-size: 130%;
+}
+}
+
+button {
+color: white;
+background-color: #252525;
+border: 2.5px solid white;
+border-radius: 25px;
+margin-bottom: 2.5px;
+}
+
+a {
+text-decoration: none;
+position: relative;
+color: #7992ff;
+}
+
+button#video {
+background: none;
+border: none;
+padding: 0;
+margin: 0;
+text-decoration: none;
+color: #7992ff;
+cursor: pointer;
+font-size: 18px;
+position: relative;
+}
+
+button#video:hover, a:hover {
+    color: #8a9dee;
+    text-decoration: none;
+    position: relative;
+    transition: color 4s ease-in-out;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button, video {
+  margin: 5px;
+}
+
+.round-button {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #252525;
+            border-radius: 50%;
+            text-align: center;
+            background-color: #252525;
+            line-height: 50px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 20px;
+}
+ul.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;}
+
+li.navbar {
+  float: left;}
+
+li.navbar a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li.navbar a:hover {
+  background-color: #111;
+}
+
+a {
+    color: cyan;
+    font-weight: bold;
+    text-decoration: none;
+    position: relative;
+    margin-left: 5px;
+}
+
+a:visited {
+    color: skyblue;
+    font-weight: bold;
+    text-decoration: underline;
+    position: relative;
+    margin-left: 5px;
+}
