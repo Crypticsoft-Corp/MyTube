@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Videos - MyTube</title>
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <h1>MyTube</h1>
+  <button onclick="location.href='{{ url_for('index') }}'">Home</button>
+  <h1>Videos</h1>
+  <div class="videos">
+    <a href="/video/Mt-CMoCGQwm.html">Test</a><br>
+
+
+    <!-- Existing video anchors will be here; new anchors are inserted at the start -->
+    <!-- Example:
+         <a href="/video/Mt-ABC123XY.html">Example Video</a><br>
+    -->
+  </div>
+</body>
+</html>

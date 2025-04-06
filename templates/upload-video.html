@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>MyTube - Upload a Video</title>
+  <link rel="icon" href="{{ url_for('static', filename='MyTube.svg') }}" alt="icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+  <script>
+    function validateFile() {
+      var fileInput = document.getElementById("video");
+      var maxFileSize = 25 * 1024 * 1024; // 25MB in bytes
+      var errorText = document.getElementById("errorText");
+
+      if (fileInput.files.length > 0) {
+        var fileSize = fileInput.files[0].size;
+        if (fileSize > maxFileSize) {
+          errorText.innerText = "Error: File size exceeds the limit (25MB). Please upload a smaller video.";
+          fileInput.value = ''; // Clear the file input
+          return false;
+        } else {
+          errorText.innerText = ''; // Clear any previous error message
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>MyTube</h1>
+  <button onclick="location.href='{{ url_for('index') }}'">Home</button>
+  <button onclick="location.href='{{ url_for('videos') }}'">Videos</button>
+  <form action="{{ url_for('upload_video') }}" method="post" enctype="multipart/form-data" onsubmit="return validateFile();">
+    <label for="video">Choose a video (max 25MB):</label>
+    <input type="file" name="video" id="video" accept="video/*" required>
+    <p id="errorText" style="color: red;"></p>
+    <br>
+    <label for="name">Uploader:</label>
+    <input type="text" name="name" id="name" required>
+    <br>
+    <label for="videoName">Video Name:</label>
+    <input type="text" name="videoName" id="videoName" required>
+    <br>
+    <label for="description">Video Description:</label>
+    <textarea name="description" id="description"></textarea>
+    <br>
+    <input type="submit" value="Upload Video">
+  </form>
+</body>
+</html>
